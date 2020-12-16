@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const chalk = require('chalk');
+const args = process.argv;
+
+({ obj2asc, log_support, log_error } = require('../src/obj2asc'));
+
+if (args.length <= 2) {
+  console.log(`
+    Usage:
+    ${chalk.red('YOU NEED USAGE')}
+  `);
+
+  return;
+}
+
+console.log(`
+======================================================
+  OBJ2ASC
+======================================================
+`);
+
+obj2asc(args);

@@ -1,0 +1,1 @@
+CTRL+SHIFT+P "Change Language Mode"
