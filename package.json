@@ -1,5 +1,5 @@
 {
-  "name": "wavefront2assemblyscript",
+  "name": "obj2asc",
   "version": "1.0.0",
   "description": "This package converts a wavefront .obj file to an AssemblyScript .asc file for use with AssemblyScript WebGL.",
   "main": "index.js",
@@ -17,9 +17,10 @@
     "file",
     "WebASsembly"
   ],
-  "author": "Rick Battagline <rick@battagline.com>",
+  "author": "Rick Battagline <rick@battagline.com> (http://embed.com/wasm)",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "chalk": "^4.1.0"
   }
 }
