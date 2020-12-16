@@ -1,4 +1,4 @@
-const chalk = require('chalk');
+const colors = require('colors');
 const fs = require('fs');
 
 var objArray = [];
@@ -15,22 +15,22 @@ var group_string = "";
 var last_material_end = 0;
 
 function log_error(error_string) {
-  console.log(chalk.red.bold(`
+  console.log(`
     ===================================================================================
     ERROR: ${error_string}
     ===================================================================================
-  `));
+  `.red.bold);
 }
 
 function log_support() {
-  console.log(chalk.gray(
+  console.log(
     `
   Need help?  
   Contact Rick Battagline
   Twitter: @battagline
   Discord: https://discord.gg/PV6PFC
   https://embed.com/wasm
-  `));
+  `.gray);
 
 }
 

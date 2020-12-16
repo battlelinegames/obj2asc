@@ -3,6 +3,7 @@
 
  ## Questions? 
  Contact me on twitter: @battagline
+ 
  Or the AssemblyScript Discord: https://discord.gg/Kz752gWc
 
 ## Install:
@@ -11,4 +12,4 @@
 
 ## Usage:
 
-`obj2asc somemodel.obj`
+`obj2asc model.obj`

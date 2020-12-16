@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const chalk = require('chalk');
+const colors = require('colors');
 const args = process.argv;
 
 ({ obj2asc, log_support, log_error } = require('../src/obj2asc'));
@@ -8,8 +8,15 @@ const args = process.argv;
 if (args.length <= 2) {
   console.log(`
     Usage:
-    ${chalk.red('YOU NEED USAGE')}
+    ${'obj2asc model.obj'.yellow}
   `);
+
+  console.log(`
+
+  Need help?
+  Contact me on twitter: @battagline
+  Or the AssemblyScript Discord: https://discord.gg/Kz752gWc
+  `.bgBlue.white);
 
   return;
 }
