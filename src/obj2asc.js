@@ -57,9 +57,25 @@ export class VertGroup {
   }
 }
 
+export class MaterialMap {
+  ambient: string | null;
+  diffuse: string | null;
+  specular: string | null;
+  emission: string | null;
+
+  constructor( Ka: string | null, Kd: string | null, 
+              Ks: string | null, Ke: string | null ) {
+    this.ambient = Ka;
+    this.diffuse = Kd;
+    this.specular = Ks;
+    this.emission = Ke;
+  }
+}
+
 export var objArray = new Array<StaticArray<f32>>(); //AAA
 export var matArray = new Array<StaticArray<f32>>(); //BBB
 export var groupArray = new Array<VertGroup>(); //CCC
+export var matMapArray = new Array<MaterialMap>(); //BBB
 `;
 
 function setFlags(args) {
@@ -113,11 +129,19 @@ function ambientReflectivity(r, g, b) {  // Ka
   currentMaterial.ambientR.b = b;
 }
 
+function ambientMap(map_file) {
+  currentMaterial.ambientMap = map_file;
+}
+
 function diffuseReflectivity(r, g, b) {  // Kd
   currentMaterial.diffuseR = {};
   currentMaterial.diffuseR.r = r;
   currentMaterial.diffuseR.g = g;
   currentMaterial.diffuseR.b = b;
+}
+
+function diffuseMap(map_file) {
+  currentMaterial.diffuseMap = map_file;
 }
 
 function specularReflectivity(r, g, b) {  // Ks
@@ -127,11 +151,19 @@ function specularReflectivity(r, g, b) {  // Ks
   currentMaterial.specularR.b = b;
 }
 
+function specularMap(map_file) {
+  currentMaterial.specularMap = map_file;
+}
+
 function emission(r, g, b) {  // Ke
   currentMaterial.emission = {};
   currentMaterial.emission.r = r;
   currentMaterial.emission.g = g;
   currentMaterial.emission.b = b;
+}
+
+function emissionMap(map_file) {
+  currentMaterial.emissionMap = map_file;
 }
 
 function opticalDensity(Ni) {
@@ -161,9 +193,17 @@ function parseMatLine(line_string) {
       //console.log('Ka');
       ambientReflectivity(tokens[1], tokens[2], tokens[3]);
       break;
+    case 'map_Ka':
+      //console.log('map_Ka');
+      ambientMap(tokens[1]);
+      break;
     case 'Kd':
       //console.log('Kd');
       diffuseReflectivity(tokens[1], tokens[2], tokens[3]);
+      break;
+    case 'map_Kd':
+      //console.log('map_Kd');
+      diffuseMap(tokens[1]);
       break;
     case 'Ks':
       //console.log('Ks');
@@ -172,6 +212,10 @@ function parseMatLine(line_string) {
     case 'Ke':
       //console.log('Ke');
       emission(tokens[1], tokens[2], tokens[3]);
+      break;
+    case 'map_Ke':
+      //console.log('map_Ke');
+      emissionMap(tokens[1]);
       break;
     case 'Ni':
       //console.log('Ni');
@@ -372,6 +416,16 @@ function parseLine(line_string) {
   }
 }
 
+function prepString(str) {
+  if (str == null) {
+    return 'null';
+  }
+  else {
+    return `'${str}'`
+  }
+
+}
+
 function obj2asc(args) {
   let file_name = args[2];
 
@@ -408,11 +462,18 @@ function obj2asc(args) {
         ${cm.illuminationModel}, // illuminationModel
       ];\n\n`;
 
-      mat_string += `matArray.push(${cm.materialName}_mat);\n\n`
+      const Ka = prepString(cm.ambientMap);
+      const Kd = prepString(cm.diffuseMap);
+      const Ks = prepString(cm.specularMap);
+      const Ke = prepString(cm.emissionMap);
+
+      mat_string +=
+        `matMapArray.push(new MaterialMap(${Ka}, ${Kd}, ${Ks}, ${Ke}));\n\n`;
+      mat_string += `matArray.push(${cm.materialName}_mat); \n\n`
     }
     if (attributeLayout === VERTEX_ATTRIBUTE_LAYOUT.INTERLEAVE) {
       let obj_string = "export var ";
-      obj_string += `${currentObj.name}_data: StaticArray<f32> =  [\n`;
+      obj_string += `${currentObj.name}_data: StaticArray<f32> =[\n`;
       if (includeUV) {
         obj_string += `//X,       Y,       Z,       U,       V,       NX,      NY,      NZ\n`;
       }
