@@ -62,13 +62,16 @@ export class MaterialMap {
   diffuse: string | null;
   specular: string | null;
   emission: string | null;
+  bump: string | null;
 
   constructor( Ka: string | null, Kd: string | null, 
-              Ks: string | null, Ke: string | null ) {
+              Ks: string | null, Ke: string | null,
+              Bump: string | null ) {
     this.ambient = Ka;
     this.diffuse = Kd;
     this.specular = Ks;
     this.emission = Ke;
+    this.bump = Bump;
   }
 }
 
@@ -144,6 +147,10 @@ function diffuseMap(map_file) {
   currentMaterial.diffuseMap = map_file;
 }
 
+function bumpMap(map_file) {
+  currentMaterial.bumpMap = map_file;
+}
+
 function specularReflectivity(r, g, b) {  // Ks
   currentMaterial.specularR = {};
   currentMaterial.specularR.r = r;
@@ -204,6 +211,10 @@ function parseMatLine(line_string) {
     case 'map_Kd':
       //console.log('map_Kd');
       diffuseMap(tokens[1]);
+      break;
+    case 'map_Bump':
+      //console.log('map_Bump');
+      bumpMap(tokens[1]);
       break;
     case 'Ks':
       //console.log('Ks');
@@ -296,7 +307,7 @@ function useMaterial(tokens) {
   startPos += materialGroupLen;
 
   console.log(`
-  mat_num=${mat_num}
+  mat_num=${mat_num - 1}
   startPos=${startPos}
   materialGroupLen=${materialGroupLen}
   `);
@@ -307,7 +318,7 @@ function useMaterial(tokens) {
     group_string += `
 groupArray.push(
   new VertGroup(
-    ${mat_num}, // material number
+    ${mat_num - 1}, // material number
     ${objArray.length - 1}, // object number
     ${startPos}, // starting face
     AAA, // length
@@ -320,7 +331,7 @@ groupArray.push(
     group_string += `
 groupArray.push(
   new VertGroup(
-    ${mat_num}, // material number
+    ${mat_num - 1}, // material number
     ${objArray.length - 1}, // object number
     0, // starting face
     AAA, // length
@@ -466,9 +477,10 @@ function obj2asc(args) {
       const Kd = prepString(cm.diffuseMap);
       const Ks = prepString(cm.specularMap);
       const Ke = prepString(cm.emissionMap);
+      const Bump = prepString(cm.bumpMap);
 
       mat_string +=
-        `matMapArray.push(new MaterialMap(${Ka}, ${Kd}, ${Ks}, ${Ke}));\n\n`;
+        `matMapArray.push(new MaterialMap(${Ka}, ${Kd}, ${Ks}, ${Ke}, ${Bump}));\n\n`;
       mat_string += `matArray.push(${cm.materialName}_mat); \n\n`
     }
     if (attributeLayout === VERTEX_ATTRIBUTE_LAYOUT.INTERLEAVE) {
