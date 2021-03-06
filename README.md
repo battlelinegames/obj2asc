@@ -18,7 +18,7 @@
  [AssemblyScript Discord](https://discord.gg/Kz752gWc)
 
 ## More of my Wasm Projects
-[Embed.com Wasm Playground](https://embed.com/wasm)
+[Wasm Book](https://wasmbook.com/wasm)
 
 [Hands-On WebAssembly](https://www.amazon.com/Hands-Game-Development-WebAssembly-programming/dp/1838644652/ref=sr_1_6?hvadid=77996677225959&hvbmt=be&hvdev=c&hvqmt=e&keywords=webassembly&qid=1559495317&s=gateway&sr=8-6)
 
